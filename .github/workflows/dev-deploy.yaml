@@ -37,10 +37,10 @@ jobs:
         run: |
           artifactName=$(ls *.jar | head -1)
           mvn deploy -s .maven/settings.xml -f pom.xml -DmuleDeploy \
-           -Denv=$ENV
+           -Denv=$ENV \
            -Dmule.artifact=$artifactName \
            -Danypoint.username="$USERNAME" \
            -Danypoint.password="$PASSWORD" \
-           -Danypoint.platform.client_id="$ANYPOINT_USERNAME"
+           -Danypoint.platform.client_id="$ANYPOINT_USERNAME" \
            -Danypoint.platform.client_secret="$ANYPOINT_PASSWORD" 
 
