@@ -41,6 +41,6 @@ jobs:
            -Dmule.artifact=$artifactName \
            -Danypoint.username="$USERNAME" \
            -Danypoint.password="$PASSWORD" \
-           -Danypoint.platform.client_id="$ANYPOINT_USERNAME" \
-           -Danypoint.platform.client_secret="$ANYPOINT_PASSWORD" 
+           -Danypoint_platform_username="$ANYPOINT_USERNAME" \
+           -Danypoint_platform_username="$ANYPOINT_PASSWORD" 
 
