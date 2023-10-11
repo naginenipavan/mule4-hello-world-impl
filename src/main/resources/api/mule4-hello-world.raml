@@ -1,0 +1,32 @@
+#%RAML 1.0
+title: mule4-hello-world
+description: This is Hello World API
+
+version: v1
+
+/hello-world: 
+  get:
+    description: Get HelloWorld
+    headers:
+      client_id?: 
+        type: string 
+        example: "c3404bd0-5cb9-4fca-9287-775ab5957b8c"
+      client_secret?: 
+        type: string 
+        example: "c3404bd0-5cb9-4fca-9287-775ab5957b8c"
+    responses:
+      200:
+        description: Get HelloWorld Response
+        headers:
+          Content-Type:
+            type: string
+            example: "application/json"
+        body:
+          application/json:
+            example: |
+              {
+                "data": {
+                  "status": "Hello World..!!"
+                }
+              }
+              
