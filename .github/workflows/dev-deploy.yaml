@@ -10,6 +10,11 @@ jobs:
     environment: dev
     runs-on: ubuntu-latest
     steps:
+      - name: log variables
+        env:
+          USERNAME: ${{ secrets.anypoint_platform_username }}
+          PASSWORD: ${{ secrets.anypoint_platform_password }}
+        run: echo "user ${USERNAME}, ${PASSWORD}  "
       - name: Checkout this repo
         uses: actions/checkout@v4
       - name: Cache dependencies
