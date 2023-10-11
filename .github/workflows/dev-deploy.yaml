@@ -1,13 +1,48 @@
 name: Dev Deploy
-run-name: ${{ github.actor }} is learning GitHub Actions
-on: [push]
+run-name: Dev Build and Deployment
+
+on:
+  push:
+    branches: [ feature/* ] 
+
 jobs:
-  check-bats-version:
+  build-dev:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v3
+      - name: Checkout this repo
+        uses: actions/checkout@v4
+      - name: Cache dependencies
+        uses: actions/cache@v3
         with:
-          node-version: '14'
-      - run: npm install -g bats
-      - run: bats -v 
+          path: ~/.m2/repository
+      - name: Set up JDK 1.8
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: 8
+      - name: Clean with Maven
+        run: mvn clean compile 
+      - name: Run Munit tests 
+        run: mvn test
+      - name: Build with Maven
+        run: mvn -B package --file pom.xml
+      - name: Upload artifact 
+        uses: actions/upload-artifact@v4
+        with:
+            name: artifacts
+            path: target/*.jar 
+
+  deploy-dev: 
+    needs: build-dev
+    runs-on: ubuntu-latest
+    steps: 
+      - name: Deploy to Dev environment 
+        env:
+          USERNAME: ${{ secrets.anypoint_platform_username }}
+          PASSWORD: ${{ secrets.anypoint_platform_password }}
+        run: |
+          artifactName=$(ls *.jar | head -1)
+          mvn deploy -DmuleDeploy \
+           -Dmule.artifact=$artifactName \
+           -Danypoint.username="$USERNAME" \
+           -Danypoint.password="$PASSWORD" 
