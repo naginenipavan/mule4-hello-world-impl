@@ -13,12 +13,32 @@
     </server>
     <server>
       <id>MuleRepository</id>
-      <username>${nexus_username}</username>
-      <password>${nexus_password}</password>
+      <username>${anypoint_username}</username>
+      <password>${anypoint_password}</password>
     </server>
   </servers>
 
   <profiles>
+
+    <profile>
+      <id>mule-extra-repos</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <repositories>
+        <repository>
+          <id>mule-public</id>
+          <url> https://repository.mulesoft.org/nexus/content/repositories/public</url>
+        </repository>
+      </repositories>
+      <pluginRepositories>
+        <pluginRepository>
+          <id>mule-public</id>
+          <url> https://repository.mulesoft.org/nexus/content/repositories/public</url>
+        </pluginRepository>
+      </pluginRepositories>
+    </profile>
+
     <profile>
       <id>Mule</id>
       <activation>
@@ -36,8 +56,28 @@
           <snapshots>
             <enabled>true</enabled>
           </snapshots>
-        </repository>     
+        </repository>
       </repositories>
     </profile>
+
+     <profile>
+       <id>archetype-repository</id>
+       <repositories>
+         <repository>
+           <id>archetype</id>
+           <name>Mule Repository</name>
+           <url>https://repository.mulesoft.org/nexus/content/repositories/public</url>
+           <releases>
+             <enabled>true</enabled>
+             <checksumPolicy>fail</checksumPolicy>
+           </releases>
+           <snapshots>
+             <enabled>true</enabled>
+             <checksumPolicy>warn</checksumPolicy>
+           </snapshots>
+         </repository>
+       </repositories>
+     </profile>
   </profiles>
+  
 </settings>
