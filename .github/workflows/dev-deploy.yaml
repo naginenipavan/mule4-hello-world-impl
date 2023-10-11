@@ -42,5 +42,5 @@ jobs:
            -Danypoint.username="$USERNAME" \
            -Danypoint.password="$PASSWORD" \
            -Danypoint_platform_username="$ANYPOINT_USERNAME" \
-           -Danypoint_platform_username="$ANYPOINT_PASSWORD" 
+           -Danypoint_platform_password="$ANYPOINT_PASSWORD" 
 
