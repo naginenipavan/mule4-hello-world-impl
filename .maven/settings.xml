@@ -8,8 +8,8 @@
   <servers>
     <server>
       <id>anypoint-exchange-v3</id>
-      <username>${anypoint_platform_username}</username>
-      <password>${anypoint_platform_password}</password>
+      <username>${anypoint_username}</username>
+      <password>${anypoint_password}</password>
     </server>
     <server>
       <id>MuleRepository</id>

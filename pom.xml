@@ -43,7 +43,7 @@
 						<objectStoreV2>true</objectStoreV2>
 						<!-- Start: SECURED PROPERTIES CI/CD -->
 						<properties>
-							<secure.key>${decryption.key}</secure.key>
+							<secure.key>${decryption_key}</secure.key>
 							<anypoint.platform.client_id>${anypoint_platform_username}</anypoint.platform.client_id>
 							<anypoint.platform.client_secret>${anypoint_platform_username}</anypoint.platform.client_secret>
 						</properties>
