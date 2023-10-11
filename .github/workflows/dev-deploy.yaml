@@ -33,7 +33,7 @@ jobs:
           USERNAME: ${{ secrets.anypoint_username }}
           PASSWORD: ${{ secrets.anypoint_password }}
           ANYPOINT_USERNAME: ${{ secrets.anypoint_platform_username }}
-          ANYPOINT_PASSWORD: ${{ secrets.anypoint_platform__password }}
+          ANYPOINT_PASSWORD: ${{ secrets.anypoint_platform_password }}
         run: |
           artifactName=$(ls *.jar | head -1)
           mvn deploy -s .maven/settings.xml -f pom.xml -DmuleDeploy \
@@ -42,5 +42,5 @@ jobs:
            -Danypoint.username="$USERNAME" \
            -Danypoint.password="$PASSWORD" \
            -Danypoint.platform.client_id="$ANYPOINT_USERNAME"
-           -Danypoint.platform.client_secret="$ANYPOINT_PASSWORD"
+           -Danypoint.platform.client_secret="$ANYPOINT_PASSWORD" 
 
