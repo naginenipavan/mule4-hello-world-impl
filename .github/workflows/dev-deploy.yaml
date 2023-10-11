@@ -10,10 +10,6 @@ jobs:
     environment: dev
     runs-on: ubuntu-latest
     steps:
-      - name: log variables
-        env:
-          USERNAME: ${{ secrets.anypoint_platform_username }}
-          PASSWORD: ${{ secrets.anypoint_platform_password }}
         run: echo "user ${USERNAME}, ${PASSWORD}  "
       - name: Checkout this repo
         uses: actions/checkout@v4
@@ -32,19 +28,18 @@ jobs:
         run: mvn test
       - name: Build with Maven
         run: mvn -B package --file pom.xml
-      - name: Upload artifact 
-        uses: actions/upload-artifact@v3
-        with:
-            name: artifacts
-            path: target/*.jar 
       - name: Deploy to Dev environment 
         env:
-          USERNAME: ${{ secrets.anypoint_platform_username }}
-          PASSWORD: ${{ secrets.anypoint_platform_password }}
+          USERNAME: ${{ secrets.anypoint_username }}
+          PASSWORD: ${{ secrets.anypoint_password }}
+          ANYPOINT_USERNAME: ${{ secrets.anypoint_platform_username }}
+          ANYPOINT_PASSWORD: ${{ secrets.anypoint_platform__password }}
         run: |
           artifactName=$(ls *.jar | head -1)
-          mvn deploy -DmuleDeploy \
+          mvn deploy -s .maven/settings.xml -f pom.xml -DmuleDeploy \
            -Dmule.artifact=$artifactName \
            -Danypoint.username="$USERNAME" \
-           -Danypoint.password="$PASSWORD" 
+           -Danypoint.password="$PASSWORD" \
+           -Danypoint.platform.client_id="$ANYPOINT_USERNAME"
+           -Danypoint.platform.client_secret="$ANYPOINT_PASSWORD"
 
