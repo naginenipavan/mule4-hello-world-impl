@@ -10,7 +10,6 @@ jobs:
     environment: dev
     runs-on: ubuntu-latest
     steps:
-        run: echo "user ${USERNAME}, ${PASSWORD}  "
       - name: Checkout this repo
         uses: actions/checkout@v4
       - name: Cache dependencies
