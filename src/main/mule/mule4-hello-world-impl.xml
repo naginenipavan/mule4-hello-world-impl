@@ -9,10 +9,12 @@ http://www.mulesoft.org/schema/mule/os http://www.mulesoft.org/schema/mule/os/cu
         <http:listener-connection host="0.0.0.0" port="8081" />
     </http:listener-config>
     <apikit:config name="mule4-hello-world-config" api="api/mule4-hello-world.raml" outboundHeadersMapName="outboundHeaders" httpStatusVarName="httpStatus" />
-    <api-gateway:autodiscovery apiId="19024317" ignoreBasePath="false" doc:name="API Autodiscovery" doc:id="e7b030ae-579c-4501-ac1f-eb868ed96cc2" flowRef="mule4-hello-world-main" />
+    <api-gateway:autodiscovery apiId="${api.id}" ignoreBasePath="false" doc:name="API Autodiscovery" doc:id="e7b030ae-579c-4501-ac1f-eb868ed96cc2" flowRef="mule4-hello-world-main" />
     
 	<os:config name="ObjectStore_Config" doc:name="ObjectStore Config" doc:id="6539e887-cd96-419c-ad35-f46fbe0ae79e" />
 	<os:object-store name="Object_store" doc:name="Object store" doc:id="45379b8e-5ff9-44d6-a897-0f6933fc5a0f" entryTtl="1" entryTtlUnit="HOURS" expirationIntervalUnit="HOURS" config-ref="ObjectStore_Config" />
+	<configuration-properties doc:name="Configuration properties" doc:id="54ead8ce-5ff4-4009-abce-241f18d3da5b" file="properties/${env}-properties.yaml" />
+	
 	<flow name="mule4-hello-world-main">
         <http:listener config-ref="mule4-hello-world-httpListenerConfig" path="/api/v1/*">
             <http:response statusCode="#[vars.httpStatus default 200]">
