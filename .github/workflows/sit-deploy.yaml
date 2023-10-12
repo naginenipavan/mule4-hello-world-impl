@@ -1,5 +1,5 @@
-name: Dev Deploy
-run-name: Dev Build and Deployment
+name: Sit Deploy
+run-name: Sit Build and Deployment
 
 on:
   push:
