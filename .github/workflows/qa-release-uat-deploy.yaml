@@ -23,5 +23,4 @@ jobs:
         with:
           distribution: 'zulu'
           java-version: 8
-      - 
 
