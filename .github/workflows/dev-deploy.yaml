@@ -31,12 +31,13 @@ jobs:
       - name: Deploy to Dev environment 
         env:
           ENV: ${{ vars.env }}
+          APP_NAME: ${{ vars.app_name }}
           USERNAME: ${{ secrets.anypoint_username }}
           PASSWORD: ${{ secrets.anypoint_password }}
           ANYPOINT_USERNAME: ${{ secrets.anypoint_platform_username }}
           ANYPOINT_PASSWORD: ${{ secrets.anypoint_platform_password }}
         run: |
-          artifactName=$(ls *.jar | head -1)
+          artifactName="$APP_NAME"
           mvn deploy -s .maven/settings.xml -f pom.xml -DmuleDeploy \
            -Denv=$ENV \
            -Dmule.artifact=$artifactName \
