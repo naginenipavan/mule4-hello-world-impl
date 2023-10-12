@@ -13,11 +13,13 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
+		<app.name>mule4-hello-world-impl</app.name>
 		<app.runtime>4.4.0</app.runtime>
 		<mule.maven.plugin.version>3.6.3</mule.maven.plugin.version>
 	</properties>
 
 	<build>
+		<finalName>${app.name}-${env}</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -35,7 +37,7 @@
 						<muleVersion>${app.runtime}</muleVersion>
 						<username>${anypoint.username}</username>
 						<password>${anypoint.password}</password>
-						<applicationName>mule4-hello-world-impl-pavann-${env}</applicationName>
+						<applicationName>${app.name}-${env}</applicationName>
 						<environment>${env}</environment>
 						<workerType>MICRO</workerType>
 						<region>us-east-2</region>
@@ -45,6 +47,7 @@
 						<properties>
 							<anypoint.platform.client_id>${anypoint_platform_username}</anypoint.platform.client_id>
 							<anypoint.platform.client_secret>${anypoint_platform_password}</anypoint.platform.client_secret>
+							<env>${env}</env>
 						</properties>
 						<!-- End: SECURED PROPERTIES CI/CD -->
 					</cloudHubDeployment>
