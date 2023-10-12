@@ -6,7 +6,7 @@ on:
     branches: [ develop ] 
 
 jobs:
-  build-dev:
+  build-sit:
     environment: sit
     runs-on: ubuntu-latest
     steps:
@@ -28,7 +28,7 @@ jobs:
         run: mvn clean compile 
       - name: Run Munit tests 
         run: mvn test
-      - name: Deploy to Dev environment 
+      - name: Deploy to Sit environment 
         env:
           ENV: ${{ vars.env }}
           USERNAME: ${{ secrets.anypoint_username }}
@@ -36,7 +36,7 @@ jobs:
           ANYPOINT_USERNAME: ${{ secrets.anypoint_platform_username }}
           ANYPOINT_PASSWORD: ${{ secrets.anypoint_platform_password }}
         run: |
-          artifactName=$(ls *.jar | head -1)
+          artifactName=$(ls *.jar | head -1)-$ENV
           mvn deploy -s .maven/settings.xml -f pom.xml -DmuleDeploy \
            -Denv=$ENV \
            -Dmule.artifact=$artifactName \
