@@ -18,6 +18,6 @@ into a central repository, after which automated builds and tests are run.
 	* master - Production code based branch tracked with the >Git tags.
 	
 <picture>
-  <img alt="Shows an illustrated Branching strategy with a nice diagram." src="/exchange-docs/ci-cd-branching-strategy.jpeg">
+  <img alt="Shows an illustrated Branching strategy with a nice diagram." src="/exchange-docs/ci-cd-branching-pipeline-strategy.png">
 </picture>
  
