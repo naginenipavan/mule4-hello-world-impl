@@ -23,15 +23,39 @@ jobs:
           java-version: 8
       - name: Clean with Maven
         run: mvn clean compile 
-      - name: Remove SNAPSHOT and prepare release and tag the release
+      - name: Run Munit tests 
+        run: mvn test
+      - name: Remove SNAPSHOT and prepare release
         run: mvn versions:set -DremoveSnapshot
-      - name: Extract the POM version 
+      - name: Compile and Test the project 
+        run: |
+          mvn clean compile -U
+          mvn test -Denv=sit 
+      - name: Extract the POM version
         id: retrieve-pom-version
         run: |
-          
           echo "POM_VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)" >> $GITHUB_OUTPUT  
       - name: Tag the release and commit/push changes to remote repository
         env: 
           POM_VERSION: ${{ steps.retrieve-pom-version.outputs.POM_VERSION }}
         run: |
           echo "$POM_VERSION"
+          git add pom.xml 
+          git config --global user.email "naginenipavan@outlook.com"
+          git config --global user.name "Pavan Nagineni"
+          git commit -m "Release $POM_VERSION"
+          git tag "$POM_VERSION"
+          echo "Released to $POM_VERSION version."
+          git push origin qa "$POM_VERSION"
+      - name: Prepare the next development version in develop branch 
+        run: |
+          git checkout develop 
+          mvn build-helper:parse-version versions:set -DnewVersion='${parsedVersion.majorVersion}.${parsedVersion.minorVersion}.${parsedVersion.nextIncrementalVersion}-SNAPSHOT'
+          mvn versions:commit
+          git add pom.xml 
+          git config --global user.email 'naginenipavan@outlook.com'
+          git config --global user.name "Pavan Nagineni" 
+          echo "incremented to next $(mvn help:evaluate -Dexpression=project.version -q -DforceStdout) SNAPSHOT version."
+          git commit -m "incremented to next $(mvn help:evaluate -Dexpression=project.version -q -DforceStdout) SNAPSHOT version"
+          git push origin develop 
+          
