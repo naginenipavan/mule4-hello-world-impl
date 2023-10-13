@@ -28,10 +28,11 @@ jobs:
       - name: Run Munit tests 
         run: mvn test
       - name: Remove SNAPSHOT and prepare release and tag the release
-        run: |
-        mvn versions:set -DremoveSnapshot
-        mvn clean compile -U
-        mvn test -Denv=sit 
+        run: mvn versions:set -DremoveSnapshot
+      - name: Compile and Test the project 
+        run: | 
+          mvn clean compile -U
+          mvn test -Denv=sit 
       - name: Extract the POM version 
         id: retrieve-pom-version
         run: |
@@ -41,12 +42,12 @@ jobs:
       - name: Tag the release and commit/push changes to remote repository
         env: 
           POM_VERSION: ${{ steps.retrieve-pom-version.outputs.POM_VERSION }}
-        run: |
-        git add pom.xml 
-        git config --global user.email "naginenipavan@outlook.com"
-        git config --global user.name "Pavan Nagineni"
-        git commit -m "Release $POM_VERSION"
-        git tag "$POM_VERSION"
-        git push origin qa "$POM_VERSION" 
+        run: | 
+          git add pom.xml 
+          git config --global user.email 'naginenipavan@outlook.com'
+          git config --global user.name "Pavan Nagineni" |
+          git commit -m "Release $POM_VERSION" |
+          git tag "$POM_VERSION" |
+          git push origin qa "$POM_VERSION" 
 
 
