@@ -1,5 +1,5 @@
 name: Release
-run-name: Uat/Prod Tag Release Deployment
+run-name: Release Deployment
 
 on:
   workflow_dispatch: 
