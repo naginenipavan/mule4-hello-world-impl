@@ -1,10 +1,10 @@
-name: mule4-hello-world-impl Release Deploy
-run-name: Uat/Prod Tag Release Deployment
+name: Release
+run-name: Release Deployment
 
 on:
   workflow_dispatch: 
     inputs: 
-      tag-version: 
+      tag: 
         description: Tag Version in form of MAJOR.MINOR.VERSION like 1.0.0
         required: true
       env: 
@@ -14,7 +14,7 @@ on:
 jobs: 
   release-deploy:
     runs-on: ubuntu-latest
-    if:  ${{ inputs.tag-version }} 
+    if:  ${{ inputs.tag }} 
     environment: ${{ inputs.env }}
     steps:
       - name: Checkout this repo
@@ -32,10 +32,11 @@ jobs:
       - name: Clean and Compile with Maven
         env: 
           ENV: ${{ inputs.env }}
-          TAG_VERSION: ${{ inputs.tag-version }}
+          TAG_VERSION: ${{ inputs.tag }}
         run: |
           echo "Deploying the $TAG_VERSION to environment: $ENV"
-          git checkout "tags/$TAG_VERSION"
+          git remote update --prune
+          git checkout 'tags/$TAG_VERSION'
       - name: Clean with Maven
         run: mvn clean compile 
       - name: Run Munit tests 
