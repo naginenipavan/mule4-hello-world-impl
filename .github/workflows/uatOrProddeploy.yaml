@@ -3,17 +3,18 @@ run-name: Deploying a Release tag to Uat environment
 
 on:
   workflow_dispatch:
-    inputs: 
-      tags:
-        description: "Release tag version in MAJOR.MINOR.PATCH version format, for ex: 1.0.0"
+    inputs:
+      tagVersion:
+        description: 'The tagVersion to deploy'
         required: true
-        type: string
+      environment:
+        description: 'The environment to deploy to'
+        required: true
 
 jobs:
-  release-uat:
+  release:
     runs-on: ubuntu-latest
-    if:  ${{ inputs.tags }} 
-    environment: uat
+    if:  ${{ inputs.tagVersion }} 
     steps:
       - name: Checkout this repo
         uses: actions/checkout@v4
@@ -29,8 +30,7 @@ jobs:
           java-version: 8
       - name: Clean and Compile with Maven
         env: 
-          TAG_VERSION: ${{ inputs.tags }}
+          TAG_VERSION: ${{ inputs.tagVersion }}
         run: |
           echo "$TAG_VERSION"
           git checkout "tags/$TAG_VERSION"
-          mvn clean compile 
