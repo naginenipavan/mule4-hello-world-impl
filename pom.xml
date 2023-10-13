@@ -4,7 +4,7 @@
 
 	<groupId>3bb54a12-39b4-4479-998d-551e08f4a560</groupId>
 	<artifactId>mule4-hello-world-impl</artifactId>
-	<version>1.0.3</version>
+	<version>1.0.4-SNAPSHOT</version>
 	<packaging>mule-application</packaging>
 
 	<name>mule4-hello-world-impl</name>
