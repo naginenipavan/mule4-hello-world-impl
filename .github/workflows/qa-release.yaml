@@ -1,5 +1,5 @@
 name: Qa Release
-run-name: Sit Build and Deployment
+run-name: Qa Release and Tagging
 
 on:
   push:
@@ -30,24 +30,16 @@ jobs:
       - name: Remove SNAPSHOT and prepare release and tag the release
         run: mvn versions:set -DremoveSnapshot
       - name: Compile and Test the project 
-        run: | 
+        run: |
           mvn clean compile -U
           mvn test -Denv=sit 
       - name: Extract the POM version 
         id: retrieve-pom-version
         run: |
-          POM_VERSION=mvn help:evaluate -Dexpression=project.version -q -DforceStdout
-          echo "The Release POM_VERSION is going to be: $POM_VERSION"
-          echo "POM_VERSION=$POM_VERSION" >> $GITHUB_OUTPUT  
+          mvn help:evaluate -Dexpression=project.version -q -DforceStdout >> $GITHUB_OUTPUT
+          echo "POM_VERSION=$GITHUB_OUTPUT" >> $GITHUB_OUTPUT  
       - name: Tag the release and commit/push changes to remote repository
         env: 
           POM_VERSION: ${{ steps.retrieve-pom-version.outputs.POM_VERSION }}
-        run: | 
-          git add pom.xml 
-          git config --global user.email 'naginenipavan@outlook.com'
-          git config --global user.name "Pavan Nagineni" |
-          git commit -m "Release $POM_VERSION" |
-          git tag "$POM_VERSION" |
-          git push origin qa "$POM_VERSION" 
-
-
+        run: |
+          echo "$POM_VERSION"
