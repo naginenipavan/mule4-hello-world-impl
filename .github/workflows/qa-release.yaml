@@ -47,11 +47,12 @@ jobs:
           git tag "$POM_VERSION"
           echo "Released to $POM_VERSION version."
           git push origin qa "$POM_VERSION"
-      - name: Checkout the Develop branch
+      - name: Checkout the Develop branch and Merge the Qa Release change
         run: | 
           git remote update
           git fetch 
           git checkout origin/develop 
+          git merge origin/qa
       - name: Prepare the next development version in develop branch 
         run: |
           mvn build-helper:parse-version versions:set -DnewVersion='${parsedVersion.majorVersion}.${parsedVersion.minorVersion}.${parsedVersion.nextIncrementalVersion}-SNAPSHOT'
