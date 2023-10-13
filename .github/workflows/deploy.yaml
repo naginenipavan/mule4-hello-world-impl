@@ -1,0 +1,58 @@
+name: mule4-hello-world-impl Release Deploy
+run-name: Uat/Prod Tag Release Deployment
+
+on:
+  workflow_dispatch: 
+    inputs: 
+      tag-version: 
+        description: Tag Version in form of MAJOR.MINOR.VERSION like 1.0.0
+        required: true
+      env: 
+        description: environment to deploy uat or prod 
+        required: true
+
+jobs: 
+  release-deploy:
+    runs-on: ubuntu-latest
+    if:  ${{ inputs.tag-version }} 
+    environment: ${{ inputs.env }}
+    steps:
+      - name: Checkout this repo
+        uses: actions/checkout@v4
+      - name: Cache dependencies
+        uses: actions/cache@v3.3.2
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+      - name: Set up JDK 1.8
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: 8
+      - name: Clean and Compile with Maven
+        env: 
+          ENV: ${{ inputs.env }}
+          TAG_VERSION: ${{ inputs.tag-version }}
+        run: |
+          echo "Deploying the $TAG_VERSION to environment: $ENV"
+          git checkout "tags/$TAG_VERSION"
+      - name: Clean with Maven
+        run: mvn clean compile 
+      - name: Run Munit tests 
+        run: mvn test
+      - name: Deploy to Release environment
+        env:
+          ENV: ${{ inputs.env }}
+          USERNAME: ${{ secrets.anypoint_username }}
+          PASSWORD: ${{ secrets.anypoint_password }}
+          ANYPOINT_USERNAME: ${{ secrets.anypoint_platform_username }}
+          ANYPOINT_PASSWORD: ${{ secrets.anypoint_platform_password }}
+        run: |
+          artifactName=$(ls *.jar | head -1)
+          mvn deploy -s .maven/settings.xml -f pom.xml -DmuleDeploy \
+           -Denv=$ENV \
+           -Dmule.artifact=$artifactName \
+           -Danypoint.username="$USERNAME" \
+           -Danypoint.password="$PASSWORD" \
+           -Danypoint_platform_username="$ANYPOINT_USERNAME" \
+           -Danypoint_platform_password="$ANYPOINT_PASSWORD" 
