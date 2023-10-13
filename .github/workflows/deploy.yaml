@@ -1,4 +1,5 @@
 name: Release Deploy
+run-name: Uat/Prod Tag Release Deployment
 
 on:
   workflow_dispatch: 
