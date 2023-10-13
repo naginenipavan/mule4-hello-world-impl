@@ -10,7 +10,7 @@ on:
         type: string
 
 jobs:
-  build-release-qa:
+  release-uat:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout this repo
