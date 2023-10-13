@@ -1,4 +1,4 @@
-name: UAT or Production Deployment
+name: Release Deployment
 
 on: 
   workflow_dispatch:
