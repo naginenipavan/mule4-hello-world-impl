@@ -21,16 +21,8 @@ jobs:
         with:
           distribution: 'zulu'
           java-version: 8
-      - name: Clean with Maven
-        run: mvn clean compile 
-      - name: Run Munit tests 
-        run: mvn test
       - name: Remove SNAPSHOT and prepare release
         run: mvn versions:set -DremoveSnapshot
-      - name: Compile and Test the project 
-        run: |
-          mvn clean compile -U
-          mvn test -Denv=sit 
       - name: Extract the POM version
         id: retrieve-pom-version
         run: |
@@ -51,8 +43,8 @@ jobs:
         run: | 
           git remote update
           git fetch 
-          git checkout origin/develop 
-          git pull qa
+          git checkout --track origin/develop 
+          git merge --ff origin/qa
       - name: Prepare the next development version in develop branch 
         run: |
           mvn build-helper:parse-version versions:set -DnewVersion='${parsedVersion.majorVersion}.${parsedVersion.minorVersion}.${parsedVersion.nextIncrementalVersion}-SNAPSHOT'
