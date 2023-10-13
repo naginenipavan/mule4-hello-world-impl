@@ -1,32 +1,36 @@
-# This is a basic workflow that is manually triggered
+name: Release Deploy
 
-name: Manual workflow
-
-# Controls when the action will run. Workflow runs when manually triggered using the UI
-# or API.
-on:
-  workflow_dispatch:
-    # Inputs the workflow accepts.
-    inputs:
-      name:
-        # Friendly description to be shown in the UI instead of 'name'
-        description: 'Person to greet'
-        # Default value if no value is explicitly provided
-        default: 'World'
-        # Input has to be provided for the workflow to run
+on: 
+  workflow_dispatch: 
+    inputs: 
+      tag-version: 
+        description: Tag Version in form of MAJOR.MINOR.VERSION like 1.0.0
         required: true
-        # The data type of the input
-        type: string
+      env: 
+        description: environment to deploy uat or prod 
+        required: true
 
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
-jobs:
-  # This workflow contains a single job called "greet"
-  greet:
-    # The type of runner that the job will run on
+jobs: 
+  release-deploy:
     runs-on: ubuntu-latest
-
-    # Steps represent a sequence of tasks that will be executed as part of the job
+    if:  ${{ inputs.tag-version }} 
+    environment: ${{ inputs.env }}
     steps:
-    # Runs a single command using the runners shell
-    - name: Send greeting
-      run: echo "Hello ${{ inputs.name }}"
+      - name: Checkout this repo
+        uses: actions/checkout@v4
+      - name: Cache dependencies
+        uses: actions/cache@v3.3.2
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+      - name: Set up JDK 1.8
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: 8
+      - name: Clean and Compile with Maven
+        env: 
+          TAG_VERSION: ${{ inputs.tag-version }}
+        run: |
+          echo "$TAG_VERSION"
+          git checkout "tags/$TAG_VERSION"
