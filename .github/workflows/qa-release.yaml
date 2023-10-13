@@ -55,5 +55,5 @@ jobs:
           git config --global user.name "Pavan Nagineni" 
           echo "incremented to next $(mvn help:evaluate -Dexpression=project.version -q -DforceStdout) SNAPSHOT version."
           git commit -m "incremented to next $(mvn help:evaluate -Dexpression=project.version -q -DforceStdout) SNAPSHOT version"
-          git push origin develop 
+          git push -f origin develop 
           
