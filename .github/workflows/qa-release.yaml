@@ -47,6 +47,10 @@ jobs:
           git tag "$POM_VERSION"
           echo "Released to $POM_VERSION version."
           git push origin qa "$POM_VERSION"
+      - name: Checkout the Develop branch
+        uses: actions/checkout@v4
+        with:
+          path: develop  
       - name: Prepare the next development version in develop branch 
         run: |
           git checkout develop 
