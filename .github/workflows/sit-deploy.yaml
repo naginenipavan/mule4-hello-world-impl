@@ -1,0 +1,47 @@
+name: Sit Deploy
+run-name: Sit Build and Deployment
+
+on:
+  push:
+    branches: [ develop ] 
+
+jobs:
+  build-sit:
+    environment: sit
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout this repo
+        uses: actions/checkout@v4
+      - name: Cache dependencies
+        uses: actions/cache@v3.3.2
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+      - name: Set up JDK 1.8
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: 8
+      - name: Clean with Maven
+        run: mvn clean compile 
+      - name: Run Munit tests 
+        run: mvn test
+      - name: Deploy to Sit environment 
+        env:
+          ENV: ${{ vars.env }}
+          USERNAME: ${{ secrets.anypoint_username }}
+          PASSWORD: ${{ secrets.anypoint_password }}
+          ANYPOINT_USERNAME: ${{ secrets.anypoint_platform_username }}
+          ANYPOINT_PASSWORD: ${{ secrets.anypoint_platform_password }}
+        run: |
+          artifactName=$(ls *.jar | head -1)
+          mvn deploy -s .maven/settings.xml -f pom.xml -DmuleDeploy \
+           -Denv=$ENV \
+           -Dmule.artifact=$artifactName \
+           -Danypoint.username="$USERNAME" \
+           -Danypoint.password="$PASSWORD" \
+           -Danypoint_platform_username="$ANYPOINT_USERNAME" \
+           -Danypoint_platform_password="$ANYPOINT_PASSWORD" 
+
