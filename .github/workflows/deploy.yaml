@@ -35,6 +35,7 @@ jobs:
           TAG_VERSION: ${{ inputs.tag }}
         run: |
           echo "Deploying the $TAG_VERSION to environment: $ENV"
+          git remote update --prune
           git checkout 'tags/$TAG_VERSION'
       - name: Clean with Maven
         run: mvn clean compile 
