@@ -21,8 +21,16 @@ jobs:
         with:
           distribution: 'zulu'
           java-version: 8
+      - name: Clean and Compile with Maven
+        run: mvn clean compile 
+      - name: Run the Munit tests 
+        run: mvn test -Denv=sit 
       - name: Remove SNAPSHOT and prepare release
         run: mvn versions:set -DremoveSnapshot
+      - name: Compile and Test the project 
+        run: |
+          mvn clean compile -U
+          mvn test -Denv=sit 
       - name: Extract the POM version
         id: retrieve-pom-version
         run: |
@@ -42,7 +50,7 @@ jobs:
       - name: Checkout the Develop branch and Merge the Qa Release change
         env: 
           POM_VERSION: ${{ steps.retrieve-pom-version.outputs.POM_VERSION }}
-        run: | 
+        run: |
           git remote update --prune
           git checkout origin/develop --force
           git reset --hard origin/qa
@@ -53,7 +61,7 @@ jobs:
           git add pom.xml 
           git config --global user.email 'naginenipavan@outlook.com'
           git config --global user.name "Pavan Nagineni" 
-          echo "incremented to next $(mvn help:evaluate -Dexpression=project.version -q -DforceStdout) SNAPSHOT version."
-          git commit -m "incremented to next $(mvn help:evaluate -Dexpression=project.version -q -DforceStdout) SNAPSHOT version"
-          git push -f -u origin HEAD:develop
+          echo "incremented to next $(mvn help:evaluate -Dexpression=project.version -q -DforceStdout) version."
+          git commit -m "incremented to next $(mvn help:evaluate -Dexpression=project.version -q -DforceStdout) version"
+          git push -f -u origin HEAD:develop 
           
