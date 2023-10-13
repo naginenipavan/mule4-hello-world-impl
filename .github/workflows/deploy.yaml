@@ -1,4 +1,4 @@
-name: Release Deploy
+name: mule4-hello-world-impl Release Deploy
 run-name: Uat/Prod Tag Release Deployment
 
 on:
