@@ -1,14 +1,14 @@
 name: Release Deploy
 
-on: 
-    workflow_dispatch: 
-      inputs: 
-        tag-version: 
-          description: Tag Version in form of MAJOR.MINOR.VERSION like 1.0.0
-          required: true
-        env: 
-          description: environment to deploy uat or prod 
-          required: true
+on:
+  workflow_dispatch: 
+    inputs: 
+      tag-version: 
+        description: Tag Version in form of MAJOR.MINOR.VERSION like 1.0.0
+        required: true
+      env: 
+        description: environment to deploy uat or prod 
+        required: true
 
 jobs: 
   release-deploy:
