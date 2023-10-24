@@ -42,7 +42,7 @@ jobs:
       - name: Clean with Maven
         run: mvn clean compile 
       - name: Run Munit tests 
-        run: mvn test
+        run: mvn test -Denv=sit
       - name: Deploy to Release environment
         env:
           ENV: ${{ inputs.env }}
@@ -59,10 +59,10 @@ jobs:
            -Danypoint.password="$PASSWORD" \
            -Danypoint_platform_username="$ANYPOINT_USERNAME" \
            -Danypoint_platform_password="$ANYPOINT_PASSWORD" 
-        - name: Checkout the master branch and Merge the Tag
-          env: 
-            TAG_VERSION: ${{ inputs.tag }}
-          run: |
-            git remote update --prune
-            git checkout origin/master --force
-            git reset --hard tags/"$TAG_VERSION"          
+      - name: Checkout the master branch and Merge the Tag
+        env: 
+          TAG_VERSION: ${{ inputs.tag }}
+        run: |
+          git remote update --prune
+          git checkout origin/master --force
+          git reset --hard tags/"$TAG_VERSION"          
