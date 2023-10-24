@@ -23,7 +23,9 @@ jobs:
         uses: actions/cache@v3.3.2
         with:
           path: ~/.m2/repository
-          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          key: ${{ runner.os }}-maven
+          restore-keys: |
+            ${{ runner.os }}-maven
       - name: Set up JDK 1.8
         uses: actions/setup-java@v3
         with:
@@ -40,7 +42,7 @@ jobs:
       - name: Clean with Maven
         run: mvn clean compile 
       - name: Run Munit tests 
-        run: mvn test
+        run: mvn test -Denv=sit
       - name: Deploy to Release environment
         env:
           ENV: ${{ inputs.env }}
@@ -57,3 +59,11 @@ jobs:
            -Danypoint.password="$PASSWORD" \
            -Danypoint_platform_username="$ANYPOINT_USERNAME" \
            -Danypoint_platform_password="$ANYPOINT_PASSWORD" 
+      - name: Checkout the master branch and Merge the Tag (only after prod deployment)
+        if:  ${{ inputs.env == 'prod' }}
+        env: 
+          TAG_VERSION: ${{ inputs.tag }}
+        run: |
+          git remote update --prune
+          git checkout origin/master --force
+          git reset --hard tags/"$TAG_VERSION"          
