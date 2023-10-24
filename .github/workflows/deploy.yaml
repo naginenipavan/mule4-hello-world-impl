@@ -59,7 +59,8 @@ jobs:
            -Danypoint.password="$PASSWORD" \
            -Danypoint_platform_username="$ANYPOINT_USERNAME" \
            -Danypoint_platform_password="$ANYPOINT_PASSWORD" 
-      - name: Checkout the master branch and Merge the Tag
+      - name: Checkout the master branch and Merge the Tag (only after prod deployment)
+        if:  ${{ inputs.env == 'prod' }}
         env: 
           TAG_VERSION: ${{ inputs.tag }}
         run: |
