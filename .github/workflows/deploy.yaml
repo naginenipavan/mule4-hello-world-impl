@@ -66,5 +66,7 @@ jobs:
         run: |
           git remote update --prune
           git checkout origin/master --force
+          git config --global user.email 'naginenipavan@outlook.com'
+          git config --global user.name "Pavan Nagineni" 
           git reset --hard tags/"$TAG_VERSION"
           git push -f -u origin HEAD:master 
