@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<mule xmlns:os="http://www.mulesoft.org/schema/mule/os" xmlns:salesforce="http://www.mulesoft.org/schema/mule/salesforce" xmlns:mule4-hello-world="http://www.mulesoft.org/schema/mule/mule4-hello-world" xmlns:validation="http://www.mulesoft.org/schema/mule/validation" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:api-gateway="http://www.mulesoft.org/schema/mule/api-gateway" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:apikit="http://www.mulesoft.org/schema/mule/mule-apikit" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd http://www.mulesoft.org/schema/mule/mule-apikit http://www.mulesoft.org/schema/mule/mule-apikit/current/mule-apikit.xsd http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd 
+<mule xmlns:json-logger="http://www.mulesoft.org/schema/mule/json-logger" xmlns:os="http://www.mulesoft.org/schema/mule/os" xmlns:salesforce="http://www.mulesoft.org/schema/mule/salesforce" xmlns:mule4-hello-world="http://www.mulesoft.org/schema/mule/mule4-hello-world" xmlns:validation="http://www.mulesoft.org/schema/mule/validation" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:api-gateway="http://www.mulesoft.org/schema/mule/api-gateway" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:apikit="http://www.mulesoft.org/schema/mule/mule-apikit" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd http://www.mulesoft.org/schema/mule/mule-apikit http://www.mulesoft.org/schema/mule/mule-apikit/current/mule-apikit.xsd http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd 
 http://www.mulesoft.org/schema/mule/api-gateway http://www.mulesoft.org/schema/mule/api-gateway/current/mule-api-gateway.xsd
 http://www.mulesoft.org/schema/mule/validation http://www.mulesoft.org/schema/mule/validation/current/mule-validation.xsd
 http://www.mulesoft.org/schema/mule/mule4-hello-world http://www.mulesoft.org/schema/mule/mule4-hello-world/current/mule-mule4-hello-world.xsd
 http://www.mulesoft.org/schema/mule/salesforce http://www.mulesoft.org/schema/mule/salesforce/current/mule-salesforce.xsd
-http://www.mulesoft.org/schema/mule/os http://www.mulesoft.org/schema/mule/os/current/mule-os.xsd">
+http://www.mulesoft.org/schema/mule/os http://www.mulesoft.org/schema/mule/os/current/mule-os.xsd
+http://www.mulesoft.org/schema/mule/json-logger http://www.mulesoft.org/schema/mule/json-logger/current/mule-json-logger.xsd">
     <http:listener-config name="mule4-hello-world-httpListenerConfig">
         <http:listener-connection host="0.0.0.0" port="8081" />
     </http:listener-config>
@@ -14,6 +15,15 @@ http://www.mulesoft.org/schema/mule/os http://www.mulesoft.org/schema/mule/os/cu
 	<os:config name="ObjectStore_Config" doc:name="ObjectStore Config" doc:id="6539e887-cd96-419c-ad35-f46fbe0ae79e" />
 	<os:object-store name="Object_store" doc:name="Object store" doc:id="45379b8e-5ff9-44d6-a897-0f6933fc5a0f" entryTtl="1" entryTtlUnit="HOURS" expirationIntervalUnit="HOURS" config-ref="ObjectStore_Config" />
 	<configuration-properties doc:name="Configuration properties" doc:id="54ead8ce-5ff4-4009-abce-241f18d3da5b" file="properties/${env}-properties.yaml" />
+	
+	<json-logger:config name="JSON_Logger_Config_Application_Log" doc:name="JSON Logger Config" doc:id="61723bf8-02d6-4bbb-bfd7-da2daaec89fe" environment="${env}" contentFieldsDataMasking="${json.logger.application.maskedFields}" >
+<!-- 		<json-logger:external-destination >
+			<json-logger:amq-destination queueOrExchangeDestination="dev-cloudwatch-logs-e" url="https://mq-eu-west-2.anypoint.mulesoft.com/api/v1" clientId="9232416aa1024ff4963b26d10f6fcde9" clientSecret="6eDdF6143915411394B04e2B7AD26649" />
+		</json-logger:external-destination> -->
+	</json-logger:config>
+	<json-logger:config name="JSON_Logger_Config_Debug_Log" doc:name="JSON Logger Config" doc:id="be808f88-4c4c-4428-abf6-6882199ce716" environment="${env}" contentFieldsDataMasking="${json.logger.application.maskedFields}" />
+	<json-logger:config name="JSON_Logger_Config_Business_Log" doc:name="JSON Logger Config" doc:id="24dd029f-2709-4e66-851b-ea535dfbc4ea" environment="${env}" contentFieldsDataMasking="${json.logger.application.maskedFields}" />	
+	<configuration-properties doc:name="Configuration properties" doc:id="60a46b60-d90d-45d3-8cda-b80fa8edffa9" file="properties/common-properties.yaml" />
 	
 	<flow name="mule4-hello-world-main">
         <http:listener config-ref="mule4-hello-world-httpListenerConfig" path="/api/v1/*">
@@ -25,8 +35,10 @@ http://www.mulesoft.org/schema/mule/os http://www.mulesoft.org/schema/mule/os/cu
                 <http:headers><![CDATA[#[vars.outboundHeaders default {}]]]></http:headers>
             </http:error-response>
         </http:listener>
-        <apikit:router config-ref="mule4-hello-world-config" />
-        <error-handler>
+        <json-logger:logger doc:name="Start Log" doc:id="f5e9967c-f8ed-435c-9060-726b73c0e9f1" config-ref="JSON_Logger_Config_Application_Log" category="${json.logger.types.application}" message='#["Request Received to the API"]'/>
+		<apikit:router config-ref="mule4-hello-world-config" />
+        <json-logger:logger doc:name="Finish Logger" doc:id="652532a7-b4f8-4634-8854-b88a7af8754e" config-ref="JSON_Logger_Config_Application_Log" message='#["Response sent from the API"]' tracePoint="END" category="${json.logger.types.application}"/>
+		<error-handler>
             <on-error-propagate type="APIKIT:BAD_REQUEST">
                 <ee:transform>
                     <ee:message>
@@ -136,7 +148,8 @@ output application/json
         </error-handler>
     </flow>
     <flow name="get:\hello-world:mule4-hello-world-config">
-        <ee:transform>
+        <json-logger:logger doc:name="Start Logger" doc:id="f480aefd-4470-44f3-a242-4ddbaf92cb84" config-ref="JSON_Logger_Config_Debug_Log" message='#["start logger"]' category='${json.logger.types.debug}' priority="DEBUG" tracePoint="FLOW"/>
+		<ee:transform>
             <ee:message>
                 <ee:set-payload><![CDATA[%dw 2.0
 output application/json
@@ -149,5 +162,6 @@ output application/json
             </ee:message>
         </ee:transform>
 		<os:store doc:name="Store" doc:id="2df7d496-0f88-4ddf-a87f-f4bebbbdebc4" objectStore="Object_store" key="saveResponse"/>
+		<json-logger:logger doc:name="Finish Logger" doc:id="6d4cd887-a101-4b69-b566-93f41ef1db68" config-ref="JSON_Logger_Config_Debug_Log" message='#["finish logger"]' category='${json.logger.types.debug}' tracePoint="FLOW" priority="DEBUG"/>
     </flow>
 </mule>

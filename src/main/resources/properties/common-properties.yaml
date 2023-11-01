@@ -1,0 +1,14 @@
+#JSON Logger
+json: 
+  logger: 
+    application: 
+      name: ${app.name}
+      version: "v1"
+      disbaledFields: ""
+      maskedFields: "cardNo,$.payload.data.email"
+    types: 
+      application: "application_logs" 
+      debug: "debug_logs" 
+      business: "business_logs" 
+      
+    
