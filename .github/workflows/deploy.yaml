@@ -43,7 +43,7 @@ jobs:
         env:
           USERNAME: ${{ secrets.anypoint_username }}
           PASSWORD: ${{ secrets.anypoint_password }}
-        run: mvn clean compile -U -s .maven/settings.xml -Danypoint.username="$USERNAME" -Danypoint.password="$PASSWORD"
+        run: mvn clean compile -U -s .maven/settings.xml -Danypoint_username="$USERNAME" -Danypoint_password="$PASSWORD"
       - name: Run Munit tests 
         run: mvn test -Denv=sit
       - name: Deploy to Release environment
