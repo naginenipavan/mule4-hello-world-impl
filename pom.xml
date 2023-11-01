@@ -48,6 +48,9 @@
 							<anypoint.platform.client_id>${anypoint_platform_username}</anypoint.platform.client_id>
 							<anypoint.platform.client_secret>${anypoint_platform_password}</anypoint.platform.client_secret>
 							<env>${env}</env>
+							<aws.region>${aws_region}</aws.region>
+							<aws.accessKeyId>${aws_accessKeyId}</aws.accessKeyId>
+							<aws.secretKey>${aws_secretKey}</aws.secretKey>
 						</properties>
 						<!-- End: SECURED PROPERTIES CI/CD -->
 					</cloudHubDeployment>
