@@ -40,7 +40,10 @@ jobs:
           git remote update --prune
           git checkout tags/"$TAG_VERSION"
       - name: Clean with Maven
-        run: mvn clean compile -U -s .maven/settings.xml
+        env:
+          USERNAME: ${{ secrets.anypoint_username }}
+          PASSWORD: ${{ secrets.anypoint_password }}
+        run: mvn clean compile -U -s .maven/settings.xml -Danypoint.username="$USERNAME" -Danypoint.password="$PASSWORD"
       - name: Run Munit tests 
         run: mvn test -Denv=sit
       - name: Deploy to Release environment

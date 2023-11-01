@@ -24,7 +24,10 @@ jobs:
           distribution: 'zulu'
           java-version: 8
       - name: Clean and Compile with Maven
-        run: mvn clean compile -U
+        env:
+          USERNAME: ${{ secrets.anypoint_username }}
+          PASSWORD: ${{ secrets.anypoint_password }}
+        run: mvn clean compile -U -s .maven/settings.xml -Danypoint.username="$USERNAME" -Danypoint.password="$PASSWORD"
       - name: Remove SNAPSHOT and prepare release
         run: mvn versions:set -DremoveSnapshot
       - name: Compile and Test the project 
