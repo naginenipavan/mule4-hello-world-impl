@@ -24,7 +24,7 @@ jobs:
           distribution: 'zulu'
           java-version: 8
       - name: Clean and Compile with Maven
-        run: mvn clean compile 
+        run: mvn clean compile -U
       - name: Remove SNAPSHOT and prepare release
         run: mvn versions:set -DremoveSnapshot
       - name: Compile and Test the project 

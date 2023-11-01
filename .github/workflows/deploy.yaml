@@ -40,7 +40,7 @@ jobs:
           git remote update --prune
           git checkout tags/"$TAG_VERSION"
       - name: Clean with Maven
-        run: mvn clean compile 
+        run: mvn clean compile -U
       - name: Run Munit tests 
         run: mvn test -Denv=sit
       - name: Deploy to Release environment

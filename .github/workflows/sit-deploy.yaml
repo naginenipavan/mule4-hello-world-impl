@@ -25,9 +25,9 @@ jobs:
           distribution: 'zulu'
           java-version: 8
       - name: Clean with Maven
-        run: mvn clean compile 
+        run: mvn clean compile -U
       - name: Run Munit tests 
-        run: mvn test
+        run: mvn test -Denv=sit
       - name: Deploy to Sit environment 
         env:
           ENV: ${{ vars.env }}
