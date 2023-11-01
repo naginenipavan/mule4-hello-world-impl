@@ -25,7 +25,7 @@ jobs:
           distribution: 'zulu'
           java-version: 8
       - name: Clean with Maven
-        run: mvn clean compile -U
+        run: mvn clean compile -U -s .maven/settings.xml
       - name: Run Munit tests 
         run: mvn test -Denv=sit
       - name: Deploy to Sit environment 

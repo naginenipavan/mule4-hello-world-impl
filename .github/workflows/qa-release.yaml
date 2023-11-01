@@ -29,7 +29,7 @@ jobs:
         run: mvn versions:set -DremoveSnapshot
       - name: Compile and Test the project 
         run: |
-          mvn clean compile -U
+          mvn clean compile -U -s .maven/settings.xml
           mvn test -Denv=sit 
       - name: Extract the POM version
         id: retrieve-pom-version
